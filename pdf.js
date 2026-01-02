@@ -14,7 +14,7 @@ const fs = require("fs-extra");
 const multer = require("multer");
 const { PDFDocument } = require("pdf-lib");
 const sharp = require("sharp");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: UPLOAD_DIR });
 
 exports.imageToPDF = [
   upload.array("files"),
@@ -97,4 +97,5 @@ exports.splitPDF = [
 function autoDelete(path) {
   setTimeout(() => fs.existsSync(path) && fs.remove(path), 5 * 60 * 1000);
 }
+
 
