@@ -51,7 +51,7 @@ exports.mergePDF = [
     }
 
     const name = `merge_${Date.now()}.pdf`;
-    const out = `outputs/${name}`;
+    const out = path.join(OUTPUT_DIR, fileName);
     fs.writeFileSync(out, await merged.save());
     autoDelete(out);
 
@@ -64,7 +64,7 @@ exports.compressPDF = [
   async (req, res) => {
     const pdf = await PDFDocument.load(fs.readFileSync(req.file.path));
     const name = `compress_${Date.now()}.pdf`;
-    const out = `outputs/${name}`;
+    const out = path.join(OUTPUT_DIR, fileName);
     fs.writeFileSync(out, await pdf.save({ useObjectStreams: false }));
     fs.remove(req.file.path);
     autoDelete(out);
@@ -83,7 +83,7 @@ exports.splitPDF = [
       const [p] = await newPdf.copyPages(pdf, [i]);
       newPdf.addPage(p);
       const name = `page_${i + 1}_${Date.now()}.pdf`;
-      const out = `outputs/${name}`;
+      const out = path.join(OUTPUT_DIR, fileName);
       fs.writeFileSync(out, await newPdf.save());
       autoDelete(out);
       links.push(`/outputs/${name}`);
@@ -97,6 +97,7 @@ exports.splitPDF = [
 function autoDelete(path) {
   setTimeout(() => fs.existsSync(path) && fs.remove(path), 5 * 60 * 1000);
 }
+
 
 
 
