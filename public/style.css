@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  color: #fff;
+  transition: 0.4s;
+}
+
+/* DARK MODE */
+body.dark {
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 60px;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  margin-top: 80px;
+  animation: fadeUp 1s ease;
+}
+
+.hero h1 {
+  font-size: 48px;
+}
+
+/* CARDS */
+.features {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 100px auto;
+}
+
+.card {
+  background: rgba(255,255,255,0.18);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.03);
+  background: rgba(255,255,255,0.28);
+}
+
+/* UPLOAD CARD */
+.upload-card {
+  margin: 40px auto;
+  width: 420px;
+  padding: 40px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(14px);
+  transition: 0.3s;
+}
+
+/* PROGRESS */
+.progress {
+  width: 420px;
+  height: 10px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+  margin: 20px auto;
+  display: none;
+}
+
+.bar {
+  height: 100%;
+  width: 0%;
+  background: #22c55e;
+  border-radius: 10px;
+}
+
+/* SEO TEXT */
+.seo-text {
+  max-width: 800px;
+  margin: 80px auto;
+  text-align: center;
+  opacity: 0.9;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 30px;
+  opacity: 0.8;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Compress PDF – Online2PDF</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <a href="index.html" class="logo">← Online2PDF</a>
+</header>
+
+<section class="hero">
+  <h1>Compress PDF</h1>
+  <p>Reduce PDF file size without losing quality</p>
+
+  <div class="upload-card" id="dropZone">
+    <input type="file" id="fileInput" hidden>
+    <p>📂 Upload PDF</p>
+  </div>
+
+  <button onclick="convertTool('compress-pdf')">Compress</button>
+
+  <div class="progress" id="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+</section>
+<footer>
+  <a href="privacy.html">Privacy</a> |
+  <a href="terms.html">Terms</a> |
+  <a href="contact.html">Contact</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
