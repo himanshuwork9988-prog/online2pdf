@@ -1,3 +1,15 @@
+const path = require("path");
+
+const UPLOAD_DIR = path.join(__dirname, "uploads");
+const OUTPUT_DIR = path.join(__dirname, "outputs");
+
+// Create folders if not exist (IMPORTANT FOR RENDER)
+if (!require("fs").existsSync(UPLOAD_DIR)) {
+  require("fs").mkdirSync(UPLOAD_DIR);
+}
+if (!require("fs").existsSync(OUTPUT_DIR)) {
+  require("fs").mkdirSync(OUTPUT_DIR);
+}
 const fs = require("fs-extra");
 const multer = require("multer");
 const { PDFDocument } = require("pdf-lib");
@@ -85,3 +97,4 @@ exports.splitPDF = [
 function autoDelete(path) {
   setTimeout(() => fs.existsSync(path) && fs.remove(path), 5 * 60 * 1000);
 }
+
