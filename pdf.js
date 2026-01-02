@@ -30,7 +30,7 @@ exports.imageToPDF = [
     }
 
     const fileName = `img_${Date.now()}.pdf`;
-    const out = `outputs/${fileName}`;
+    const out = path.join(OUTPUT_DIR, fileName);
     fs.writeFileSync(out, await pdf.save());
     autoDelete(out);
 
@@ -97,5 +97,6 @@ exports.splitPDF = [
 function autoDelete(path) {
   setTimeout(() => fs.existsSync(path) && fs.remove(path), 5 * 60 * 1000);
 }
+
 
 
