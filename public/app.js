@@ -1,16 +1,9 @@
-// DARK MODE TOGGLE
-document.addEventListener("keydown", (e) => {
-  if (e.key === "d") {
-    document.body.classList.toggle("dark");
-  }
-});
-// ===== GLOBAL ELEMENTS =====
 const dropZone = document.getElementById("dropZone");
 const fileInput = document.getElementById("fileInput");
 const progress = document.getElementById("progress");
 const bar = document.getElementById("bar");
 
-// ===== DRAG & DROP =====
+// Drag & drop
 if (dropZone && fileInput) {
   dropZone.onclick = () => fileInput.click();
 
@@ -30,57 +23,49 @@ if (dropZone && fileInput) {
   };
 }
 
-// ===== MAIN CONVERT FUNCTION =====
+// 🔥 MAIN FIX: ABSOLUTE API CALL
 async function convertTool(tool) {
   if (!fileInput || !fileInput.files.length) {
-    alert("Please upload file first");
+    alert("Please upload file");
     return;
   }
 
-  const files = fileInput.files;
   const formData = new FormData();
+  const files = fileInput.files;
 
-  // Tools that accept multiple files
   if (tool === "image-to-pdf" || tool === "merge-pdf") {
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
-  } 
-  // Tools that accept single file
-  else {
+  } else {
     formData.append("file", files[0]);
   }
 
-  // Show progress bar
-  if (progress && bar) {
-    progress.style.display = "block";
-    bar.style.width = "30%";
-  }
+  progress.style.display = "block";
+  bar.style.width = "30%";
 
   try {
-    const response = await fetch(`/${tool}`, {
-      method: "POST",
-      body: formData
-    });
+    const response = await fetch(
+      window.location.origin + "/" + tool,
+      {
+        method: "POST",
+        body: formData
+      }
+    );
 
     const data = await response.json();
+    bar.style.width = "100%";
 
-    if (bar) bar.style.width = "100%";
-
-    // Single download
     if (data.url) {
       window.open(data.url, "_blank");
     }
 
-    // Multiple downloads (split PDF)
-    if (data.pages && Array.isArray(data.pages)) {
-      data.pages.forEach((link) => {
-        window.open(link, "_blank");
-      });
+    if (data.pages) {
+      data.pages.forEach(link => window.open(link, "_blank"));
     }
 
-  } catch (error) {
-    alert("Something went wrong. Try again.");
-    console.error(error);
+  } catch (err) {
+    alert("Server error. Please try again.");
+    console.error(err);
   }
 }
