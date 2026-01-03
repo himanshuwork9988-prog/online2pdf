@@ -157,4 +157,16 @@ body {
   background: #eef2ff;
   border-color: #6366f1;
 }
+.option-box {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.option-box select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5f5;
+}
+
 
