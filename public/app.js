@@ -1,6 +1,12 @@
+/* =========================
+   TOOL DETECTION
+========================= */
 const params = new URLSearchParams(window.location.search);
 const tool = params.get("tool");
 
+/* =========================
+   TITLES
+========================= */
 const titles = {
   "image-to-pdf": "Image to PDF",
   "merge-pdf": "Merge PDF",
@@ -17,16 +23,37 @@ const titles = {
 document.getElementById("toolTitle").innerText =
   titles[tool] || "PDF Tool";
 
+/* =========================
+   ELEMENTS
+========================= */
 const dropZone = document.getElementById("dropZone");
 const fileInput = document.getElementById("fileInput");
 const fileList = document.getElementById("fileList");
+const progress = document.getElementById("progress");
+const bar = document.getElementById("bar");
 
+/* OPTIONS */
+const rotateOptions = document.getElementById("rotateOptions");
+const splitOptions = document.getElementById("splitOptions");
+const passwordBox = document.getElementById("passwordBox");
+const imgFormatBox = document.getElementById("imgFormatBox");
+
+/* =========================
+   SHOW OPTIONS BASED ON TOOL
+========================= */
+if (tool === "rotate-pdf") rotateOptions && (rotateOptions.style.display = "block");
+if (tool === "split-pdf") splitOptions && (splitOptions.style.display = "block");
+if (tool === "protect-pdf" || tool === "unlock-pdf")
+  passwordBox && (passwordBox.style.display = "block");
+if (tool === "jpg-png") imgFormatBox && (imgFormatBox.style.display = "block");
+
+/* =========================
+   FILE HANDLING
+========================= */
 let files = [];
 
-/* CLICK UPLOAD */
 dropZone.onclick = () => fileInput.click();
 
-/* DRAG & DROP MULTIPLE */
 dropZone.ondragover = e => {
   e.preventDefault();
   dropZone.classList.add("dragover");
@@ -40,7 +67,6 @@ dropZone.ondrop = e => {
   addFiles([...e.dataTransfer.files]);
 };
 
-/* FILE SELECT */
 fileInput.onchange = () => addFiles([...fileInput.files]);
 
 function addFiles(newFiles) {
@@ -48,14 +74,13 @@ function addFiles(newFiles) {
   renderFiles();
 }
 
-/* RENDER PREVIEW */
 function renderFiles() {
   fileList.innerHTML = "";
   files.forEach((file, index) => {
     const li = document.createElement("li");
     li.className = "file-item";
     li.draggable = true;
-    li.innerHTML = `<span>${file.name}</span> <span>☰</span>`;
+    li.innerHTML = `<span>${file.name}</span><span>☰</span>`;
 
     li.ondragstart = () => li.classList.add("dragging");
     li.ondragend = () => li.classList.remove("dragging");
@@ -71,13 +96,14 @@ function reorder(targetIndex) {
   const dragging = document.querySelector(".dragging");
   const fromIndex = [...fileList.children].indexOf(dragging);
   if (fromIndex === targetIndex) return;
-
   const moved = files.splice(fromIndex, 1)[0];
   files.splice(targetIndex, 0, moved);
   renderFiles();
 }
 
-/* RUN TOOL */
+/* =========================
+   RUN TOOL
+========================= */
 async function runTool() {
   if (!files.length) {
     alert("Please upload files first");
@@ -92,8 +118,44 @@ async function runTool() {
     formData.append("file", files[0]);
   }
 
-  document.getElementById("progress").style.display = "block";
-  document.getElementById("bar").style.width = "40%";
+  /* TOOL OPTIONS */
+  if (tool === "rotate-pdf") {
+    formData.append(
+      "degree",
+      document.getElementById("rotateDegree").value
+    );
+  }
+
+  if (tool === "split-pdf") {
+    formData.append(
+      "range",
+      document.getElementById("splitRange").value
+    );
+  }
+
+  if (tool === "protect-pdf") {
+    formData.append(
+      "password",
+      document.getElementById("pdfPassword").value
+    );
+  }
+
+  if (tool === "unlock-pdf") {
+    formData.append(
+      "password",
+      document.getElementById("pdfPassword").value
+    );
+  }
+
+  if (tool === "jpg-png") {
+    formData.append(
+      "format",
+      document.getElementById("imgFormat").value
+    );
+  }
+
+  progress.style.display = "block";
+  bar.style.width = "40%";
 
   try {
     const res = await fetch(
@@ -102,12 +164,29 @@ async function runTool() {
     );
 
     const data = await res.json();
-    document.getElementById("bar").style.width = "100%";
+    bar.style.width = "100%";
 
-    if (data.url) window.open(data.url, "_blank");
-    if (data.pages) data.pages.forEach(p => window.open(p, "_blank"));
+    if (data.url) forceDownload(data.url);
+    if (data.pages) data.pages.forEach(p => forceDownload(p));
 
-  } catch {
+  } catch (e) {
     alert("Service error. Please try again.");
+  } finally {
+    setTimeout(() => {
+      progress.style.display = "none";
+      bar.style.width = "0%";
+    }, 1500);
   }
+}
+
+/* =========================
+   FORCE DOWNLOAD
+========================= */
+function forceDownload(url) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
 }
