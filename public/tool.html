@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDF Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">← PDF Tools</a>
+</header>
+
+<section class="tool-wrap">
+  <h2 id="toolTitle">PDF Tool</h2>
+  <p id="toolDesc">Upload your file and process instantly.</p>
+
+  <div class="upload-box" id="dropZone">
+    <input type="file" id="fileInput" hidden />
+    <p>Drag & drop files here</p>
+    <span>or click to upload</span>
+  </div>
+
+  <button class="primary" onclick="runTool()">Process</button>
+
+  <div class="progress" id="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Secure processing • Auto delete</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
