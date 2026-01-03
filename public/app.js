@@ -3,10 +3,9 @@ const tool = params.get("tool");
 
 const titles = {
   "image-to-pdf": "Image to PDF",
-  "pdf-to-image": "PDF to Image",
   "merge-pdf": "Merge PDF",
-  "split-pdf": "Split PDF",
   "compress-pdf": "Compress PDF",
+  "split-pdf": "Split PDF",
   "rotate-pdf": "Rotate PDF",
   "watermark-pdf": "Add Watermark",
   "page-number-pdf": "Add Page Numbers",
@@ -20,64 +19,95 @@ document.getElementById("toolTitle").innerText =
 
 const dropZone = document.getElementById("dropZone");
 const fileInput = document.getElementById("fileInput");
-const progress = document.getElementById("progress");
-const bar = document.getElementById("bar");
+const fileList = document.getElementById("fileList");
 
+let files = [];
+
+/* CLICK UPLOAD */
 dropZone.onclick = () => fileInput.click();
 
-dropZone.ondragover = e => e.preventDefault();
-dropZone.ondrop = e => {
+/* DRAG & DROP MULTIPLE */
+dropZone.ondragover = e => {
   e.preventDefault();
-  fileInput.files = e.dataTransfer.files;
+  dropZone.classList.add("dragover");
 };
 
+dropZone.ondragleave = () => dropZone.classList.remove("dragover");
+
+dropZone.ondrop = e => {
+  e.preventDefault();
+  dropZone.classList.remove("dragover");
+  addFiles([...e.dataTransfer.files]);
+};
+
+/* FILE SELECT */
+fileInput.onchange = () => addFiles([...fileInput.files]);
+
+function addFiles(newFiles) {
+  newFiles.forEach(f => files.push(f));
+  renderFiles();
+}
+
+/* RENDER PREVIEW */
+function renderFiles() {
+  fileList.innerHTML = "";
+  files.forEach((file, index) => {
+    const li = document.createElement("li");
+    li.className = "file-item";
+    li.draggable = true;
+    li.innerHTML = `<span>${file.name}</span> <span>☰</span>`;
+
+    li.ondragstart = () => li.classList.add("dragging");
+    li.ondragend = () => li.classList.remove("dragging");
+
+    li.ondragover = e => e.preventDefault();
+    li.ondrop = () => reorder(index);
+
+    fileList.appendChild(li);
+  });
+}
+
+function reorder(targetIndex) {
+  const dragging = document.querySelector(".dragging");
+  const fromIndex = [...fileList.children].indexOf(dragging);
+  if (fromIndex === targetIndex) return;
+
+  const moved = files.splice(fromIndex, 1)[0];
+  files.splice(targetIndex, 0, moved);
+  renderFiles();
+}
+
+/* RUN TOOL */
 async function runTool() {
-  if (!fileInput.files.length) {
-    alert("Please upload a file first");
+  if (!files.length) {
+    alert("Please upload files first");
     return;
   }
 
   const formData = new FormData();
-  const files = fileInput.files;
 
-  if (tool === "image-to-pdf" || tool === "merge-pdf") {
-    for (let f of files) formData.append("files", f);
+  if (tool === "merge-pdf" || tool === "image-to-pdf") {
+    files.forEach(f => formData.append("files", f));
   } else {
     formData.append("file", files[0]);
   }
 
-  progress.style.display = "block";
-  bar.style.width = "30%";
+  document.getElementById("progress").style.display = "block";
+  document.getElementById("bar").style.width = "40%";
 
   try {
     const res = await fetch(
       window.location.origin + "/" + tool,
-      {
-        method: "POST",
-        body: formData
-      }
+      { method: "POST", body: formData }
     );
 
-    if (!res.ok) throw new Error("Server error");
-
     const data = await res.json();
-    bar.style.width = "100%";
+    document.getElementById("bar").style.width = "100%";
 
-    if (data.url) {
-      window.open(data.url, "_blank");
-    } else if (data.pages) {
-      data.pages.forEach(p => window.open(p, "_blank"));
-    } else {
-      alert("Unexpected server response");
-    }
+    if (data.url) window.open(data.url, "_blank");
+    if (data.pages) data.pages.forEach(p => window.open(p, "_blank"));
 
-  } catch (err) {
-    console.error(err);
+  } catch {
     alert("Service error. Please try again.");
-  } finally {
-    setTimeout(() => {
-      progress.style.display = "none";
-      bar.style.width = "0%";
-    }, 1500);
   }
 }
