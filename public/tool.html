@@ -14,13 +14,16 @@
 
 <section class="tool-wrap">
   <h2 id="toolTitle">PDF Tool</h2>
-  <p id="toolDesc">Upload your file and process instantly.</p>
+  <p id="toolDesc">Upload files. Drag to reorder. Process instantly.</p>
 
   <div class="upload-box" id="dropZone">
     <input type="file" id="fileInput" hidden multiple />
-    <p>Drag & drop files here</p>
+    <p>📂 Drag & drop files here</p>
     <span>or click to upload</span>
   </div>
+
+  <!-- FILE PREVIEW -->
+  <ul id="fileList" class="file-list"></ul>
 
   <button class="primary" onclick="runTool()">Process</button>
 
@@ -36,4 +39,3 @@
 <script src="app.js"></script>
 </body>
 </html>
-
