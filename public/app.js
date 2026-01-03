@@ -3,30 +3,18 @@ const fileInput = document.getElementById("fileInput");
 const progress = document.getElementById("progress");
 const bar = document.getElementById("bar");
 
-// Drag & drop
 if (dropZone && fileInput) {
   dropZone.onclick = () => fileInput.click();
-
-  dropZone.ondragover = (e) => {
-    e.preventDefault();
-    dropZone.style.opacity = "0.7";
-  };
-
-  dropZone.ondragleave = () => {
-    dropZone.style.opacity = "1";
-  };
-
-  dropZone.ondrop = (e) => {
+  dropZone.ondragover = e => e.preventDefault();
+  dropZone.ondrop = e => {
     e.preventDefault();
     fileInput.files = e.dataTransfer.files;
-    dropZone.style.opacity = "1";
   };
 }
 
-// 🔥 MAIN FIX: ABSOLUTE API CALL
 async function convertTool(tool) {
   if (!fileInput || !fileInput.files.length) {
-    alert("Please upload file");
+    alert("Please upload a file first");
     return;
   }
 
@@ -34,9 +22,7 @@ async function convertTool(tool) {
   const files = fileInput.files;
 
   if (tool === "image-to-pdf" || tool === "merge-pdf") {
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
+    for (let f of files) formData.append("files", f);
   } else {
     formData.append("file", files[0]);
   }
@@ -45,27 +31,33 @@ async function convertTool(tool) {
   bar.style.width = "30%";
 
   try {
-    const response = await fetch(
-      window.location.origin + "/" + tool,
-      {
-        method: "POST",
-        body: formData
-      }
-    );
+    const res = await fetch(window.location.origin + "/" + tool, {
+      method: "POST",
+      body: formData
+    });
 
-    const data = await response.json();
+    if (!res.ok) {
+      throw new Error("Server error");
+    }
+
+    const data = await res.json();
     bar.style.width = "100%";
 
     if (data.url) {
       window.open(data.url, "_blank");
-    }
-
-    if (data.pages) {
-      data.pages.forEach(link => window.open(link, "_blank"));
+    } else if (data.pages) {
+      data.pages.forEach(p => window.open(p, "_blank"));
+    } else {
+      alert("Unexpected response from server");
     }
 
   } catch (err) {
-    alert("Server error. Please try again.");
     console.error(err);
+    alert("Service temporarily unavailable. Please refresh and try again.");
+  } finally {
+    setTimeout(() => {
+      progress.style.display = "none";
+      bar.style.width = "0%";
+    }, 1500);
   }
 }
