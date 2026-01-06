@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PDF Tool</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>PDF Tool – Online2PDF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header class="topbar">
-  <a href="index.html">← Back</a>
+  <a href="index.html" class="back">← Online2PDF</a>
 </header>
 
-<section class="tool-box">
+<section class="tool-wrap">
   <h1 id="toolTitle">PDF Tool</h1>
 
-  <input type="file" id="fileInput" multiple>
+  <p class="tool-info">
+    Upload your file, process it online and download instantly.
+    All files are deleted automatically.
+  </p>
 
-  <div id="extraOptions"></div>
+  <input type="file" id="fileInput" multiple />
 
-  <button onclick="runTool()">Process</button>
+  <button class="primary" onclick="runTool()">Process</button>
 </section>
+
+<footer class="footer">
+  <p>© 2026 Online2PDF</p>
+</footer>
 
 <script src="app.js"></script>
 </body>
