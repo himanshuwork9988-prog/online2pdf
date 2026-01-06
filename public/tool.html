@@ -2,25 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PDF Tool</title>
-  <p class="tool-info">
-  This tool allows you to process your PDF files directly in your browser.
-  Upload your document, choose the required options and download the result instantly.
-  All files are processed securely and deleted automatically.
-</p>
+  <title>PDF Tool – Online2PDF</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Use free online PDF tools to merge, split, rotate, compress and convert PDF files securely." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header class="topbar">
-  <a class="brand" href="index.html">← PDF Tools</a>
+  <a href="index.html" class="logo">← Online2PDF</a>
 </header>
 
 <section class="tool-wrap">
-  <h2 id="toolTitle">PDF Tool</h2>
-  <p id="toolDesc">Upload files. Choose options. Process instantly.</p>
 
+  <h1 id="toolTitle">PDF Tool</h1>
+
+  <p class="tool-info">
+    Upload your file, choose the required options and download the processed PDF instantly.
+    All files are processed securely and deleted automatically.
+  </p>
+
+  <!-- UPLOAD -->
   <div class="upload-box" id="dropZone">
     <input type="file" id="fileInput" hidden multiple />
     <p>📂 Drag & drop files here</p>
@@ -32,20 +34,17 @@
 
   <!-- SPLIT OPTIONS -->
   <div id="splitOptions" class="option-box" style="display:none;">
-    <label style="display:block;margin-bottom:6px;">
-      Split pages (example: <b>1-3</b> or leave empty for all pages)
-    </label>
+    <label>Split pages (example: 1-3)</label>
     <input
       type="text"
       id="splitRange"
       placeholder="e.g. 1-3"
-      style="width:100%;padding:10px;border-radius:8px;border:1px solid #cbd5f5;"
     />
   </div>
 
   <!-- ROTATE OPTIONS -->
   <div id="rotateOptions" class="option-box" style="display:none;">
-    <label style="display:block;margin-bottom:6px;">Rotate by</label>
+    <label>Rotate by</label>
     <select id="rotateDegree">
       <option value="90">90°</option>
       <option value="180">180°</option>
@@ -55,35 +54,32 @@
 
   <!-- IMAGE FORMAT -->
   <div id="imgFormatBox" class="option-box" style="display:none;">
-    <label style="display:block;margin-bottom:6px;">Convert to</label>
+    <label>Convert image to</label>
     <select id="imgFormat">
       <option value="png">PNG</option>
       <option value="jpg">JPG</option>
     </select>
   </div>
 
+  <!-- PROCESS -->
   <button class="primary" onclick="runTool()">Process</button>
 
+  <!-- PROGRESS -->
   <div class="progress" id="progress">
     <div class="bar" id="bar"></div>
   </div>
+
 </section>
-<section class="trust">
-  <h2>Why trust Online2PDF?</h2>
-  <ul>
-    <li>✔ Files deleted automatically</li>
-    <li>✔ No login required</li>
-    <li>✔ Secure HTTPS processing</li>
-    <li>✔ Free to use</li>
-  </ul>
-</section>
+
 <footer class="footer">
-  <p>Secure processing • Auto delete</p>
+  <p>© 2026 Online2PDF. All rights reserved.</p>
+  <div>
+    <a href="privacy.html">Privacy</a> |
+    <a href="terms.html">Terms</a> |
+    <a href="contact.html">Contact</a>
+  </div>
 </footer>
 
 <script src="app.js"></script>
 </body>
 </html>
-
-
-
