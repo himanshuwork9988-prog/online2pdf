@@ -193,4 +193,67 @@ nav a {
   margin: 20px 0;
   box-shadow: 0 6px 20px rgba(0,0,0,0.05);
 }
+/* ===== TOOL UI POLISH (SAFE ENHANCEMENT) ===== */
+
+/* Tool title & description */
+#toolTitle {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+#toolDesc {
+  font-size: 15px;
+  color: #475569;
+  margin-bottom: 24px;
+}
+
+/* Upload box enhancement */
+.upload-box {
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.upload-box:hover {
+  background: #eef2ff;
+  border-color: #6366f1;
+}
+
+/* File list polish */
+.file-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-list li::before {
+  content: "📄";
+}
+
+/* Primary button improvement */
+.primary {
+  margin-top: 10px;
+  box-shadow: 0 8px 20px rgba(79,70,229,0.25);
+}
+
+.primary:hover {
+  transform: translateY(-1px);
+}
+
+/* Option box spacing */
+.option-box label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #334155;
+}
+
+/* Tool content readability */
+.tool-content h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.tool-content p {
+  font-size: 14px;
+  line-height: 1.6;
+}
 
