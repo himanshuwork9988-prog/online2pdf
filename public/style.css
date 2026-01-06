@@ -47,6 +47,21 @@ body {
   margin-top: 12px;
   color: #475569;
 }
+.hero-gradient {
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  padding: 80px 20px;
+}
+
+.hero h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.hero p {
+  font-size: 18px;
+  margin-top: 10px;
+}
 
 /* GRID */
 .grid {
@@ -168,5 +183,6 @@ body {
   border-radius: 8px;
   border: 1px solid #cbd5f5;
 }
+
 
 
