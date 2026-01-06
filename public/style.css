@@ -168,5 +168,22 @@ body {
   border-radius: 8px;
   border: 1px solid #cbd5f5;
 }
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #eef2ff, #ffffff);
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  color: #475569;
+  max-width: 700px;
+  margin: auto;
+}
+
 
 
